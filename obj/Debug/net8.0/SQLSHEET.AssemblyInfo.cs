@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SQLSHEET")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3c7bc1fb1702dc427ce8fa64666148098ff0c259")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f2fcd875550f24cfd11188f2a8eb758f179c19e")]
 [assembly: System.Reflection.AssemblyProductAttribute("SQLSHEET")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SQLSHEET")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
