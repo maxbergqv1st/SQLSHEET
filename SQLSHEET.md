@@ -61,11 +61,20 @@ JOIN Courses c ON e.CourseID = c.CourseID;
 
 # POKEMON DATABASE
 
+-- 1️⃣ Droppa gamla tabeller
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS BundleCards;
+DROP TABLE IF EXISTS Bundles;
+DROP TABLE IF EXISTS PokemonCards;
+DROP TABLE IF EXISTS Series;
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- 2️⃣ Skapa tabeller
 CREATE TABLE PokemonCards (
 cardID INT AUTO_INCREMENT PRIMARY KEY,
 name VARCHAR(64) NOT NULL,
-rarity VARCHAR(32), -- Common, Rare, Ultra Rare osv
-cardSpec VARCHAR(64) -- Super Illustration Rare, Full Art, Secret Rare osv
+rarity VARCHAR(32),
+cardSpec VARCHAR(64)
 );
 
 CREATE TABLE Series (
@@ -92,17 +101,29 @@ FOREIGN KEY (bundleID) REFERENCES Bundles(bundleID),
 FOREIGN KEY (cardID) REFERENCES PokemonCards(cardID)
 );
 
+-- 3️⃣ Lägg in kort (utökat med fler populära kort)
 INSERT INTO PokemonCards (name, rarity, cardSpec) VALUES
+-- Base
+('Pikachu', 'Common', NULL),
+('Charizard', 'Ultra Rare', 'Holo Rare'),
+('Bulbasaur', 'Common', NULL),
+('Mewtwo', 'Rare', 'Holo Rare'),
+('Gyarados', 'Rare Holo', NULL),
+-- Shining Legends
+('Lugia', 'Rare', 'Full Art'),
+('Ho-Oh', 'Rare', 'Full Art'),
+('Rayquaza', 'Rare', 'Full Art'),
+('Gardevoir', 'Rare', NULL),
+('Eevee', 'Common', NULL),
+-- 151
 ('Charizard ex', 'Ultra Rare', 'Super Illustration Rare'),
 ('Blastoise ex', 'Rare Holo', NULL),
 ('Venusaur ex', 'Rare Holo', NULL),
 ('Zapdos ex', 'Super Rare', NULL),
 ('Alakazam ex', 'Super Rare', NULL),
 ('Pikachu V', 'Rare', 'Full Art'),
-('Bulbasaur', 'Common', NULL),
 ('Squirtle', 'Common', NULL),
 ('Charmander', 'Common', NULL),
-('Eevee', 'Common', NULL),
 ('Gyarados V', 'Ultra Rare', NULL),
 ('Mewtwo VMAX', 'Ultra Rare', 'Rainbow Rare'),
 ('Snorlax V', 'Rare', NULL),
@@ -112,52 +133,105 @@ INSERT INTO PokemonCards (name, rarity, cardSpec) VALUES
 ('Vaporeon', 'Rare', NULL),
 ('Flareon', 'Rare', NULL),
 ('Gengar V', 'Super Rare', NULL),
-('Dragonite', 'Rare Holo', NULL);
+('Dragonite', 'Rare Holo', NULL),
+-- Black Bolt
+('Hydreigon', 'Ultra Rare', 'Full Art'),
+('Zekrom', 'Rare Holo', NULL),
+('Reshiram', 'Rare Holo', NULL),
+('Kyurem', 'Super Rare', NULL),
+('Garchomp', 'Rare', NULL),
+-- Mega Evolution
+('Mega Charizard X', 'Ultra Rare', 'Full Art'),
+('Mega Blastoise', 'Rare Holo', NULL),
+('Mega Venusaur', 'Rare Holo', NULL),
+('Mega Gengar', 'Super Rare', NULL),
+('Mega Mewtwo', 'Ultra Rare', 'Full Art'),
+-- Extra moderna kort
+('Lugia V', 'Ultra Rare', 'Full Art'),
+('Ho-Oh V', 'Ultra Rare', 'Full Art'),
+('Rayquaza V', 'Ultra Rare', 'Full Art'),
+('Mew V', 'Ultra Rare', 'Rainbow Rare'),
+('Zacian V', 'Ultra Rare', 'Full Art'),
+('Zamazenta V', 'Ultra Rare', 'Full Art'),
+('Charizard VMAX', 'Ultra Rare', 'Rainbow Rare');
 
+-- 4️⃣ Lägg in serier
 INSERT INTO Series (seriesName, releaseDate) VALUES
 ('Base Series', '1999-01-01'),
+('Neo & e-Card Era', '2000-12-16'),
 ('Sword & Shield', '2020-02-07'),
 ('Scarlet & Violet', '2023-03-31');
 
+-- 5️⃣ Lägg in bundles
 INSERT INTO Bundles (bundleName, releaseDate, seriesID) VALUES
 ('Base Set', '1999-01-01', 1),
-('Shining Legends', '2019-06-15', 2),
-('151', '2023-09-22', 3),
-('Black Bolt', '2025-07-18', 3),
-('Mega Evolution', '2025-09-26', 3);
+('Jungle', '1999-06-16', 1),
+('Fossil', '1999-10-10', 1),
+('Shining Legends', '2019-06-15', 3),
+('151', '2023-09-22', 4),
+('Black Bolt', '2025-07-18', 4),
+('Mega Evolution', '2025-09-26', 4),
+('Sword & Shield', '2020-02-07', 3),
+('Rebel Clash', '2020-05-01', 3),
+('Darkness Ablaze', '2020-08-14', 3),
+('Vivid Voltage', '2020-11-13', 3),
+('Chilling Reign', '2021-06-11', 3),
+('Evolving Skies', '2021-08-27', 3),
+('Celebrations', '2021-10-08', 3),
+('Scarlet & Violet', '2023-03-31', 4),
+('Paradox Rift', '2023-11-03', 4),
+('Paldea Evolved', '2023-06-09', 4),
+('Crown Zenith', '2023-01-20', 3);
 
--- Bundle ID 3 = '151'
+-- 6️⃣ Lägg in BundleCards (exempel med priser och chase cards)
+-- Base Set (bundleID=1)
 INSERT INTO BundleCards (bundleID, cardID, price, isChaseCard) VALUES
-(3, 1, 266, TRUE), -- Charizard ex
-(3, 2, 79, TRUE), -- Blastoise ex
-(3, 3, 75, TRUE), -- Venusaur ex
-(3, 4, 72, TRUE), -- Zapdos ex
-(3, 5, 52, TRUE), -- Alakazam ex
-(3, 6, 10, FALSE), -- Pikachu V
-(3, 7, 8, FALSE), -- Bulbasaur
-(3, 8, 12, FALSE), -- Squirtle
-(3, 9, 9, FALSE), -- Charmander
-(3, 10, 7, FALSE), -- Eevee
-(3, 11, 65, FALSE), -- Gyarados V
-(3, 12, 48, FALSE), -- Mewtwo VMAX
-(3, 13, 40, FALSE), -- Snorlax V
-(3, 14, 35, FALSE), -- Machamp
-(3, 15, 30, FALSE), -- Arcanine
-(3, 16, 28, FALSE), -- Jolteon
-(3, 17, 25, FALSE), -- Vaporeon
-(3, 18, 22, FALSE), -- Flareon
-(3, 19, 20, FALSE), -- Gengar V
-(3, 20, 18, FALSE); -- Dragonite
+(1, 1, 50, FALSE),
+(1, 2, 200, TRUE),
+(1, 3, 60, FALSE),
+(1, 4, 150, TRUE),
+(1, 5, 180, TRUE);
 
-SELECT
-b.bundleName,
-p.name,
-p.rarity,
-p.cardSpec,
-bc.price,
-bc.isChaseCard
+-- Shining Legends (bundleID=4)
+INSERT INTO BundleCards (bundleID, cardID, price, isChaseCard) VALUES
+(4, 6, 120, TRUE),
+(4, 7, 115, TRUE),
+(4, 8, 110, TRUE),
+(4, 9, 50, FALSE),
+(4, 10, 15, FALSE);
+
+-- 151 (bundleID=5)
+INSERT INTO BundleCards (bundleID, cardID, price, isChaseCard) VALUES
+(5, 11, 266, TRUE),
+(5, 12, 79, TRUE),
+(5, 13, 75, TRUE),
+(5, 14, 72, TRUE),
+(5, 15, 52, TRUE),
+(5, 16, 10, FALSE),
+(5, 17, 8, FALSE),
+(5, 18, 12, FALSE),
+(5, 19, 9, FALSE),
+(5, 20, 7, FALSE);
+
+-- Black Bolt (bundleID=6)
+INSERT INTO BundleCards (bundleID, cardID, price, isChaseCard) VALUES
+(6, 31, 200, TRUE),
+(6, 32, 180, TRUE),
+(6, 33, 170, TRUE),
+(6, 34, 150, TRUE),
+(6, 35, 100, FALSE);
+
+-- Mega Evolution (bundleID=7)
+INSERT INTO BundleCards (bundleID, cardID, price, isChaseCard) VALUES
+(7, 36, 300, TRUE),
+(7, 37, 250, TRUE),
+(7, 38, 240, TRUE),
+(7, 39, 200, TRUE),
+(7, 40, 350, TRUE);
+
+-- 7️⃣ Kontrollera data
+SELECT b.bundleName, p.name, p.rarity, p.cardSpec, bc.price, bc.isChaseCard
 FROM BundleCards bc
 JOIN Bundles b ON bc.bundleID = b.bundleID
 JOIN PokemonCards p ON bc.cardID = p.cardID
-WHERE b.bundleName = '151'
-ORDER BY bc.price DESC;
+ORDER BY b.bundleID, bc.price DESC;
